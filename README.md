@@ -1,0 +1,1 @@
+This repository consists of all assignments for the course COE332 for the Spring 2023 term. All code is written in Python.
