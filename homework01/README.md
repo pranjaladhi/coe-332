@@ -2,4 +2,4 @@ Contains the first homework for COE332, consisting of three total exercises. The
 
 **Note to compile and run each exercise: <br />
 -exercise1.py requires the file "words" to be in the repo /usr/share/dict <br />
--exercise2.py & exercise 3.py needs names library to be imported, via the code: pip3 install --user names
+-exercise2.py & exercise 3.py requires names library to be imported, via the code: pip3 install --user names
