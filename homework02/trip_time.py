@@ -45,3 +45,4 @@ for i in range (len(sites_d['sites'])): #iterating (or traveling) through the 5 
 
 print("----------------------------------------------------------")
 print("Number of legs =", len(sites_d['sites']), ", total travel time =", round(total_travel_time, 2), "hr") #printing the total time it takes for the investigation of the 5 sites to occur
+print("----------------------------------------------------------")
