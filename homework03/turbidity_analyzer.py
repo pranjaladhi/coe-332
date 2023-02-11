@@ -26,7 +26,7 @@ def current_water_turbidity():
         i += 1
     return t/5
 
-def time_required(turb):
+def time_required(turb: float) -> float:
     """
     Given the turbidity of the water, calculates the minimum time (in hours) required to reach the threshold for the water
     to be safe. The equation used to caluclate the time is the standard exponential decay function.
@@ -40,31 +40,18 @@ def time_required(turb):
     d = .02  #decay factor per hour
     return math.log(ts/turb, 1-d)
 
-def if_water_safe(turb):
-    """
-    Determines if the water is safe, given the turbidity value and compared with the turbidity threshold. The result is
-    printed for the user. If the turbidity is above the threshold for safe use, the function time_required is called to print 
-    the minimum time required for the water to be safe.
-
-    Args:
-        turb (float): value of the turbidity of water
-    Returns:
-        print (string): statement whether the water is safe and minimum time required for water to be safe (if applicable)
-    """
-    ts = 1.0 #turbidity threshold
-    if ts < turb:
-        print("*UNSAFE WARNING* Turbidity is above the threshold for safe use")
-        print("Minimum time required to return below a safe threshold:", round(time_required(turb), 2), "hours")
-    else:
-        print("*SAFE* Turbidity is below the threshold for safe use")
-        print("Minimum time required to return below a safe threshold: 0 hours")
-
 
 def main():
     print("\n-----WATER TURBIDITY ANALYZER-----\n")
     water_turbidity = current_water_turbidity()
     print("Current water turbidiy (based on average of 5 recent measurements):", round(water_turbidity, 5), "NTU")
-    if_safe = if_water_safe(water_turbidity)
+    ts = 1.0 #turbidity threshold
+    if ts < water_turbidity:
+        print("*UNSAFE WARNING* Turbidity is above the threshold for safe use")
+        print("Minimum time required to return below a safe threshold:", round(time_required(water_turbidity), 2), "hours")
+    else:
+        print("*SAFE* Turbidity is below the threshold for safe use")
+        print("Minimum time required to return below a safe threshold: 0 hours")
 
 if __name__ == '__main__':
     main()
