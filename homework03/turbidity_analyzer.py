@@ -8,27 +8,56 @@ turbidity_data = requests.get(url='https://raw.githubusercontent.com/wjallen/tur
 turbidity = turbidity_data.json()
 
 def current_water_turbidity():
+    """
+    Calculates the turbidity of the water, utilizing the 5 most recent measurements of the calibration constant
+    and the ninety degree detector current. The values are then averaged to determine the turbidity.
+
+    Args: 
+        no arguments required for this functions
+    Returns:
+        turbidity (float): average water turbidity
+    """
     i = len(turbidity['turbidity_data']) - 5
     t = 0
     while (i < (len(turbidity['turbidity_data']))):
-        a0 = turbidity['turbidity_data'][i]['calibration_constant']
-        I90 = turbidity['turbidity_data'][i]['detector_current']
-        t += a0 * I90 # calculating turbidity
+        a0 = turbidity['turbidity_data'][i]['calibration_constant'] #calibration constant
+        I90 = turbidity['turbidity_data'][i]['detector_current'] #ninety degree detector current
+        t += a0 * I90 #calculating turbidity
         i += 1
     return t/5
 
-def time_required(t0):
-    ts = 1.0
-    d = .02
-    return ts/(t0*(1-d))
+def time_required(turb):
+    """
+    Given the turbidity of the water, calculates the minimum time (in hours) required to reach the threshold for the water
+    to be safe. The equation used to caluclate the time is the standard exponential decay function.
+
+    Args:
+        turb (float): value of the turbidity of water
+    Returns:
+        minimum time (float): time required to reach threshold
+    """
+    ts = 1.0 #turbidity threshold for safe water
+    d = .02  #decay factor per hour
+    return math.log(ts/turb, 1-d)
 
 def if_water_safe(turb):
-    ts = 1.0
-    if ts > turb:
+    """
+    Determines if the water is safe, given the turbidity value and compared with the turbidity threshold. The result is
+    printed for the user. If the turbidity is above the threshold for safe use, the function time_required is called to print 
+    the minimum time required for the water to be safe.
+
+    Args:
+        turb (float): value of the turbidity of water
+    Returns:
+        print (string): statement whether the water is safe and minimum time required for water to be safe (if applicable)
+    """
+    ts = 1.0 #turbidity threshold
+    if ts < turb:
         print("*UNSAFE WARNING* Turbidity is above the threshold for safe use")
         print("Minimum time required to return below a safe threshold:", round(time_required(turb), 2), "hours")
     else:
         print("*SAFE* Turbidity is below the threshold for safe use")
+        print("Minimum time required to return below a safe threshold: 0 hours")
 
 
 def main():
@@ -36,7 +65,6 @@ def main():
     water_turbidity = current_water_turbidity()
     print("Current water turbidiy (based on average of 5 recent measurements):", round(water_turbidity, 5), "NTU")
     if_safe = if_water_safe(water_turbidity)
-
 
 if __name__ == '__main__':
     main()
