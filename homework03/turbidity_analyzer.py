@@ -42,8 +42,7 @@ def time_required(turb: float) -> float:
 def main():
     print("\n-----WATER TURBIDITY ANALYZER-----\n")
     turbidity_data = requests.get(url='https://raw.githubusercontent.com/wjallen/turbidity/main/turbidity_data.json')
-    turbidity = turbidity_data.json()
-    water_turbidity = current_water_turbidity(turbidity)
+    water_turbidity = current_water_turbidity(turbidity_data.json())
     print("Current water turbidity (based on average of 5 recent measurements):", round(water_turbidity, 5), "NTU")
     ts = 1.0 #turbidity threshold
     if ts < water_turbidity:
