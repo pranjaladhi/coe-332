@@ -4,25 +4,18 @@ import json
 import requests
 import math
 
-def current_water_turbidity(turb_data: dict) -> float:
+def current_water_turbidity(a0: float, I90: float) -> float:
     """
-    Calculates the turbidity of the water, utilizing the 5 most recent measurements of the calibration constant
-    and the ninety degree detector current. The values are then averaged to determine the water turbidity.
+    Calculates the turbidity of the water, given calibration constant and the ninety degree detector current.
 
     Args: 
-        turb_data (dict): water turbidity data
+        a0 (float): calibration constant
+        I90 (float): ninety degree detector current
 
     Returns:
         turbidity (float): average water turbidity
     """
-    i = len(turb_data['turbidity_data']) - 5
-    t = 0
-    while (i < (len(turb_data['turbidity_data']))):
-        a0 = turb_data['turbidity_data'][i]['calibration_constant'] #calibration constant
-        I90 = turb_data['turbidity_data'][i]['detector_current'] #ninety degree detector current
-        t += a0 * I90 #calculating turbidity
-        i += 1
-    return t/5
+    return a0*I90 #equation to calculate turbidity
 
 def time_required(turb: float) -> float:
     """
@@ -42,7 +35,14 @@ def time_required(turb: float) -> float:
 def main():
     print("\n-----WATER TURBIDITY ANALYZER-----\n")
     turbidity_data = requests.get(url='https://raw.githubusercontent.com/wjallen/turbidity/main/turbidity_data.json')
-    water_turbidity = current_water_turbidity(turbidity_data.json())
+    i = len(turbidity_data.json()['turbidity_data']) - 5
+    water_turbidity = 0
+    while (i < (len(turbidity_data.json()['turbidity_data']))):
+        a0 = turbidity_data.json()['turbidity_data'][i]['calibration_constant'] #calibration constant
+        I90 = turbidity_data.json()['turbidity_data'][i]['detector_current'] #ninety degree detector current
+        water_turbidity += current_water_turbidity(a0, I90)
+        i += 1
+    water_turbidity = water_turbidity/5
     print("Current water turbidity (based on average of 5 recent measurements):", round(water_turbidity, 5), "NTU")
     ts = 1.0 #turbidity threshold
     if ts < water_turbidity:
