@@ -1,7 +1,7 @@
 # Water Turbidity Analyzer
 
 ### Purpose
-One of the goals of this project is to determine the turbidity of the water after collecting samples from different sites on Mars, to conclude whether the water is within a safe threshold for use. The data of the samples is supplied through this [link](https://raw.githubusercontent.com/wjallen/turbidity/main/turbidity_data.json), a JSON dictionary with the key `turbidity_data`. Taking the data, the current water turbidity is determined by taking the average of the 5 most recent measurements of the calibration constant and ninety degree detector current, and a conclusion is made if the water is safe for use. This is all done within the file *turbidity_analyzer.py*. Afterwards, the functions written in the analyzer file will be tested from the file *test_turbidity_analyzer.py*. A main objective of this project is to learn how to work with the Python `requests` library and the `pytest` unit testing framework. These two libraries allow for the expansion of standard Python library to work with additional data sets as well as to automate testing of the programs written. With the utilization of these two libraries in the industry, it is important to become fimiliar with them in understanding how powerful and capable they are.
+One of the goals of this project is to determine the turbidity of the water after collecting samples from different sites on Mars, to conclude whether the water is within a safe threshold for use. The data of the samples is supplied through the [link](https://raw.githubusercontent.com/wjallen/turbidity/main/turbidity_data.json), a JSON dictionary with the key `turbidity_data`. Taking the data, the current water turbidity is determined by taking the average of the 5 most recent measurements of the calibration constant and ninety degree detector current, and a conclusion is made if the water is safe for use. This is all done within the file *turbidity_analyzer.py*. Afterwards, the functions written in the analyzer file will be tested from the file *test_turbidity_analyzer.py*. A main objective of this project is to learn how to work with the Python `requests` library and the `pytest` unit testing framework. These two libraries allow for the expansion of standard Python library to work with additional data sets as well as to automate testing of the programs written. With the utilization of these two libraries in the industry, it is important to become fimiliar with them in understanding how powerful and capable they are.
 
 ### Code Scripts
 In the *turbidity_analyzer.py* file, lines 7-18 `def current_water_turbidity...` is the function which takes arguments of the calibration constant and ninety degree detector current to determine the water turbidity of the sample. The function after, `def time_required...` in lines 20-32, the minimum time required is determined utilizing the current water turbidity as the argument. Within lines 35-53 in `def main()`, line 37
@@ -13,8 +13,8 @@ utilizes the `requests` library to retrieve the water data from the [URL](https:
 i = len(turbidity_data.json()['turbidity_data']) - 5
 water_turbidity = 0
 while (i < (len(turbidity_data.json()['turbidity_data']))):
-    a0 = turbidity_data.json()['turbidity_data'][i]['calibration_constant'] #calibration constant
-    I90 = turbidity_data.json()['turbidity_data'][i]['detector_current'] #ninety degree detector current
+    a0 = turbidity_data.json()['turbidity_data'][i]['calibration_constant'] 
+    I90 = turbidity_data.json()['turbidity_data'][i]['detector_current'] 
     water_turbidity += current_water_turbidity(a0, I90)
     i += 1
 water_turbidity = water_turbidity/5
