@@ -29,7 +29,7 @@ def time_required(turb: float) -> float:
     """
     ts = 1.0 #turbidity threshold for safe water
     d = .02  #decay factor per hour
-    return math.log(ts/turb, 1-d)
+    return math.log(ts/turb, 1-d) #standard exponential decay formula
 
 
 def main():
