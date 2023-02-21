@@ -14,20 +14,42 @@ app = Flask(__name__)
 
 @app.route('/', methods = ['GET'])
 def data_set():
-    return iss_data
+    """
+    Outputs the entire ISS Trajectory Data found on the NASA website.
 
+    Args:
+        none
+    Returns:
+        iss_data (dictionary): ISS data set
+    """
+    return iss_data
 
 @app.route('/epochs', methods = ['GET'])
 def all_epochs():
+    """
+    Lists all the EPOCHs in the data set of the ISS.
+
+    Args:
+        none
+    Return:
+        epochs (list): list of all EPOCHs
+    """
     epochs = []
     data = data_set()
     for i in range(len(data['ndm']['oem']['body']['segment']['data']['stateVector'])):
         epochs.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'])
     return epochs
 
-
 @app.route('/epochs/<epoch>', methods = ['GET'])
 def vectors(epoch):
+    """
+    Outputs the state vectors for the specified EPOCH from the data set.
+    
+    Args:
+        epoch (str): specified EPOCH time stamp
+    Returns:
+        state_vectors (list): state vectors of the specified EPOCH
+    """
     data = data_set()
     for i in range(len(data['ndm']['oem']['body']['segment']['data']['stateVector'])):
         if (data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'] == epoch):
@@ -37,8 +59,16 @@ def vectors(epoch):
         
 @app.route('/epochs/<epoch>/speed', methods = ['GET'])
 def epoch_speed(epoch):
+    """
+    Calculates the speed of the ISS in the specified EPOCH utilizing the x, y, and z components of speed.
+    
+    Args:
+        epoch (str): specified EPOCH time stamp
+    Returns:
+        speed (list): the speed of the ISS at the specified EPOCH
+    """
     data = vectors(epoch)
-    speed = {}
+    speed = []
     sumSpeedSquare = pow(float(data[0]['X_DOT']['#text']), 2) + pow(float(data[0]['Y_DOT']['#text']), 2) + pow(float(data[0]['Z_DOT']['#text']), 2)
     speed['Speed of EPOCH'] = (sqrt(sumSpeedSquare))
     return speed
