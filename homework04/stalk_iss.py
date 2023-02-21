@@ -65,12 +65,12 @@ def epoch_speed(epoch):
     Args:
         epoch (str): specified EPOCH time stamp
     Returns:
-        speed (list): the speed of the ISS at the specified EPOCH
+        speed (dictionary): the speed of the ISS at the specified EPOCH
     """
     data = vectors(epoch)
-    speed = []
+    speed = {}
     sumSpeedSquare = pow(float(data[0]['X_DOT']['#text']), 2) + pow(float(data[0]['Y_DOT']['#text']), 2) + pow(float(data[0]['Z_DOT']['#text']), 2)
-    speed['Speed of EPOCH'] = (sqrt(sumSpeedSquare))
+    speed['Speed of EPOCH'] = (sqrt(sumSpeedSquare)) #magnitude of speed utilizing the x, y, and z components of speed
     return speed
 
 if __name__ == '__main__':
