@@ -30,19 +30,19 @@ the x, y, and z components of the ISS is extracted to compute the instantaneous 
 
 ### Running the Code
 First, the source file of *stalk_iss.py* must be placed in a directory. Next, the 'requests' library will need to be installed in the top level directory, which is done by the line:
-> pip3 install --user requests
+> `pip3 install --user requests`
 
 Next, the 'xmltodict' library is needed in the same top level directory, installed by the line:
-> pip3 install --user xmltodict
+> `pip3 install --user xmltodict`
 
 Lastly, the 'flask' library will be needed, installed by the line:
-> pip3 install --user flask
+> `pip3 install --user flask`
 
 After the installations, another terminal will be useful to run the Flask application in one, and test it on the other. In one of the terminals, in the same directory as the *stalk_iss.py* file, run the Flask application with the line:
-> flask --app stalk_iss --debug run
+> `flask --app stalk_iss --debug run`
 
 This will begin the Flask application and the server will be running. In the other terminal, in the same directory, enter the line:
-> curl localhost:5000/
+> `curl localhost:5000/`
 
 This will make a request to the Flask app, with the route `/`. This will return the entire ISS data set and an example output may look like:
 ```
@@ -83,7 +83,7 @@ This will make a request to the Flask app, with the route `/`. This will return 
 ```
 
 Next in the same terminal, run the line:
-> curl localhost:5000/epochs
+> `curl localhost:5000/epochs`
 
 This will return all the EPOCHs data. The output may look like: 
 ```
