@@ -65,7 +65,7 @@ def epoch_speed(epoch: str) -> dict:
     Args:
         epoch (str): specified EPOCH time stamp
     Returns:
-        speed (dictionary): the speed of the ISS at the specified EPOCH
+        speed (dict): the speed of the ISS at the specified EPOCH
     """
     data = vectors(epoch)
     speed = {}
