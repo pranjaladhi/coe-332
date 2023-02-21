@@ -8,24 +8,24 @@ In the *stalk_iss.py* file, lines 15-25 `@app.route('/', methods = ['GET'])...` 
 ```
 for i in range(len(data['ndm']['oem']['body']['segment']['data']['stateVector'])):
         epochs.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'])
-	```
-	the loop iterates through the `stateVector` list and extracts all values with the key `EPOCH`. Next, in lines 43-58 `@app.route('/epochs/<epoch>', methods = ['GET'])...` the URL `/epochs/<epoch>` is requested, with `<epoch>` being input by the user. This will call the function `def vectors(epoch: str) -> list:...` and return the state vectors for the specific `<epoch>`. This is performed in lines 55-58
-	```
-	if (data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'] == epoch):
-	            state_vectors = []
-		                state_vectors.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i])
-				            return state_vectors
-					    ```
-					    where the `if (data['ndm']...` function will gather and return the state vector data if the iterated `['EPOCH']` matches the user input of `<epoch>`. Lastly from lines 60-74, `@app.route('/epochs/<epoch>/speed', methods = ['GET'])...` the speed of the ISS is returned with the user input of `<epoch>`. In line 70
-					    ```
-					    data = vectors(epoch)
-					    ```
-					    the function will first call the `def vectors(epoch: str) -> list:...` function (in line 44) to gather the state vector in the specified `<epoch>`. Then, in lines 72-73
-					    ```
-					    sumSpeedSquare = pow(float(data[0]['X_DOT']['#text']), 2) + pow(float(data[0]['Y_DOT']['#text']), 2) + pow(float(data[0]['Z_DOT']['#text']), 2)
-					        speed['Speed of EPOCH'] = (sqrt(sumSpeedSquare))
-						```
-						the x, y, and z components of the ISS is extracted to compute the instantaneous speed at time `<epoch>`.
+```
+the loop iterates through the `stateVector` list and extracts all values with the key `EPOCH`. Next, in lines 43-58 `@app.route('/epochs/<epoch>', methods = ['GET'])...` the URL `/epochs/<epoch>` is requested, with `<epoch>` being input by the user. This will call the function `def vectors(epoch: str) -> list:...` and return the state vectors for the specific `<epoch>`. This is performed in lines 55-58
+```
+if (data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'] == epoch):
+            state_vectors = []
+            state_vectors.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i])
+            return state_vectors
+```
+where the `if (data['ndm']...` function will gather and return the state vector data if the iterated `['EPOCH']` matches the user input of `<epoch>`. Lastly from lines 60-74, `@app.route('/epochs/<epoch>/speed', methods = ['GET'])...` the speed of the ISS is returned with the user input of `<epoch>`. In line 70
+```
+data = vectors(epoch)
+```
+the function will first call the `def vectors(epoch: str) -> list:...` function (in line 44) to gather the state vector in the specified `<epoch>`. Then, in lines 72-73
+```
+sumSpeedSquare = pow(float(data[0]['X_DOT']['#text']), 2) + pow(float(data[0]['Y_DOT']['#text']), 2) + pow(float(data[0]['Z_DOT']['#text']), 2)
+    speed['Speed of EPOCH'] = (sqrt(sumSpeedSquare))
+```
+the x, y, and z components of the ISS is extracted to compute the instantaneous speed at time `<epoch>`.
 
 
 ### Running the Code
@@ -51,93 +51,93 @@ This will make a request to the Flask app, with the route `/`. This will return 
 .
 
                 },
-		                "Z": {
-				                  "#text": "1652.0698653803699",
-						                    "@units": "km"
-								                    },
-										                    "Z_DOT": {
-												                      "#text": "-5.7191913150960803",
-														                        "@units": "km/s"
-																	                }
-																			              }
-																				                  ]
-																						            },
-																							              "metadata": {
-																								                  "CENTER_NAME": "EARTH",
-																										              "OBJECT_ID": "1998-067-A",
-																											                  "OBJECT_NAME": "ISS",
-																													              "REF_FRAME": "EME2000",
-																														                  "START_TIME": "2023-048T12:00:00.000Z",
-																																              "STOP_TIME": "2023-063T12:00:00.000Z",
-																																	                  "TIME_SYSTEM": "UTC"
-																																			            }
-																																				            }
-																																					          },
-																																						        "header": {
-																																							        "CREATION_DATE": "2023-049T01:38:49.191Z",
-																																								        "ORIGINATOR": "JSC"
-																																									      }
-																																									          }
-																																										    }
-																																										    }
-																																										    ```
+                "Z": {
+                  "#text": "1652.0698653803699",
+                  "@units": "km"
+                },
+                "Z_DOT": {
+                  "#text": "-5.7191913150960803",
+                  "@units": "km/s"
+                }
+              }
+            ]
+          },
+          "metadata": {
+            "CENTER_NAME": "EARTH",
+            "OBJECT_ID": "1998-067-A",
+            "OBJECT_NAME": "ISS",
+            "REF_FRAME": "EME2000",
+            "START_TIME": "2023-048T12:00:00.000Z",
+            "STOP_TIME": "2023-063T12:00:00.000Z",
+            "TIME_SYSTEM": "UTC"
+          }
+        }
+      },
+      "header": {
+        "CREATION_DATE": "2023-049T01:38:49.191Z",
+        "ORIGINATOR": "JSC"
+      }
+    }
+  }
+}
+```
 
 Next in the same terminal, run the line:
 > curl localhost:5000/epochs
 
-This will return all the EPOCHs data. The output may look like:
+This will return all the EPOCHs data. The output may look like: 
 ```
 .
 .
 .
   "2023-063T11:51:00.000Z",
-    "2023-063T11:55:00.000Z",
-      "2023-063T11:59:00.000Z",
-        "2023-063T12:00:00.000Z"
-	]
-	```
+  "2023-063T11:55:00.000Z",
+  "2023-063T11:59:00.000Z",
+  "2023-063T12:00:00.000Z"
+]
+```
 
 Furthermore, running the line:
-> curl localhost:5000/epochs/<epoch>
+> `curl localhost:5000/epochs/<epoch>`
 
-with 2023-063T12:00:00.000Z in the place of <epoch> may result in the output of:
+with '2023-063T12:00:00.000Z' in the place of `<epoch>` may result in the output of:
 ```
 [
   {
-      "EPOCH": "2023-063T12:00:00.000Z",
-          "X": {
-	        "#text": "2820.04422055639",
-		      "@units": "km"
-		          },
-			      "X_DOT": {
-			            "#text": "5.0375825820999403",
-				          "@units": "km/s"
-					      },
-					          "Y": {
-						        "#text": "-5957.89709645725",
-							      "@units": "km"
-							          },
-								      "Y_DOT": {
-								            "#text": "0.78494316057540003",
-									          "@units": "km/s"
-										      },
-										          "Z": {
-											        "#text": "1652.0698653803699",
-												      "@units": "km"
-												          },
-													      "Z_DOT": {
-													            "#text": "-5.7191913150960803",
-														          "@units": "km/s"
-															      }
-															        }
-																]
-																```
+    "EPOCH": "2023-063T12:00:00.000Z",
+    "X": {
+      "#text": "2820.04422055639",
+      "@units": "km"
+    },
+    "X_DOT": {
+      "#text": "5.0375825820999403",
+      "@units": "km/s"
+    },
+    "Y": {
+      "#text": "-5957.89709645725",
+      "@units": "km"
+    },
+    "Y_DOT": {
+      "#text": "0.78494316057540003",
+      "@units": "km/s"
+    },
+    "Z": {
+      "#text": "1652.0698653803699",
+      "@units": "km"
+    },
+    "Z_DOT": {
+      "#text": "-5.7191913150960803",
+      "@units": "km/s"
+    }
+  }
+]
+```
 
 Lastly, running the line:
-> curl localhost:5000/epochs/<epoch>/speed
+> `curl localhost:5000/epochs/<epoch>/speed`
 
-with 2023-063T12:00:00.000Z in place of <epoch> may output with:
+with '2023-063T12:00:00.000Z' in place of `<epoch>` may output with:
 ```
 {
   "Speed of EPOCH": 7.661757196327827
-  }
+}
