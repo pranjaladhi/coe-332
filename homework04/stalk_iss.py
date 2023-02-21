@@ -41,7 +41,7 @@ def all_epochs():
     return epochs
 
 @app.route('/epochs/<epoch>', methods = ['GET'])
-def vectors(epoch):
+def vectors(epoch: str) -> list:
     """
     Outputs the state vectors for the specified EPOCH from the data set.
     
@@ -58,7 +58,7 @@ def vectors(epoch):
             return state_vectors
         
 @app.route('/epochs/<epoch>/speed', methods = ['GET'])
-def epoch_speed(epoch):
+def epoch_speed(epoch: str) -> dict:
     """
     Calculates the speed of the ISS in the specified EPOCH utilizing the x, y, and z components of speed.
     
