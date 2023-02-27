@@ -79,12 +79,14 @@ def epoch_speed(epoch: str) -> dict:
     speed['Speed of EPOCH'] = (sqrt(sumSpeedSquare)) #magnitude of speed utilizing the x, y, and z components of speed
     return speed
 
+#to run: curl -X DELETE localhost:5000/delete-data
 @app.route('/delete-data', methods = ['DELETE'])
 def del_data():
     global iss_data
     iss_data.clear()
     return 'Deleted ISS data\n'
 
+#to run: curl -X POST localhost:5000/post-data
 @app.route('/post-data', methods = ['POST'])
 def retrieve_data():
     global iss_data
@@ -94,7 +96,16 @@ def retrieve_data():
 
 @app.route('/help', methods = ['GET'])
 def define_routes():
-    return 'Usage:'
+    return '''\nUsage: curl 'localhost:5000[OPTIONS]'\n
+    Options:\n
+    1. /                                   returns entire ISS data set\n
+    2. /epochs                             returns list of all EPOCHs\n
+    3. /epochs?limit=<int>&offset=<int>    returns modified list of EPOCHs given query parameters of limit and offset\n
+    4. /epochs/<epoch>                     returns state vectors for a specified EPOCH\n
+    5. /epochs/<epoch>/speed               returns instantaneous speed for specified EPOCH\n
+    6. /delete-data                        deletes all data stored in the ISS data set dictionary\n
+    7. /post-data                          reloads the ISS data set from the web into the dictionary object\n
+'''
 
 if __name__ == '__main__':
     app.run(debug = True, host = '0.0.0.0')
