@@ -50,12 +50,12 @@ def modified_epoch():
         try:
             num_epochs = int(num_epochs)
         except ValueError:
-            return "Limit must be an integer"
+            return "Limit must be an integer\n"
     if start:
         try:
             start = int(start)
         except ValueError:
-            return "Start must be an integer"
+            return "Start must be an integer\n"
     end = start + num_epochs
     epochs = []
     while start < end:
@@ -84,7 +84,7 @@ def epoch_speed(epoch: str) -> dict:
 def del_data():
     global iss_data
     iss_data.clear()
-    return 'Deleted ISS data\n'
+    return "Deleted ISS data\n"
 
 #to run: curl -X POST localhost:5000/post-data
 @app.route('/post-data', methods = ['POST'])
@@ -92,7 +92,7 @@ def retrieve_data():
     global iss_data
     r = requests.get('https://nasa-public-data.s3.amazonaws.com/iss-coords/current/ISS_OEM/ISS.OEM_J2K_EPH.xml')
     iss_data = xmltodict.parse(r.text)
-    return 'Successfully reloaded data\n'
+    return "Successfully reloaded data\n"
 
 @app.route('/help', methods = ['GET'])
 def define_routes():
