@@ -43,6 +43,13 @@ def vectors(epoch: str) -> list:
 #'localhost:5000/epochs?limit=int&offset=int'
 @app.route('/epochs', methods = ['GET'])
 def modified_epoch():
+    """
+    Lists all the EPOCHs in the data set of the ISS. With query parameters ('limit' and 'offset'), the user will be able to control how many and which EPOCHs to display.
+    Args:
+        none
+    Return:
+        epochs (list): list of all EPOCHs
+    """
     data = data_set()
     num_epochs = request.args.get('limit', len(data['ndm']['oem']['body']['segment']['data']['stateVector']))
     start = request.args.get('offset', 0)
