@@ -40,7 +40,7 @@ def vectors(epoch: str) -> list:
             state_vectors.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i])
             return state_vectors
 
-#'localhost:5000/epochs?limit=int&offset=int'
+#to run with query parameter: curl 'localhost:5000/epochs?limit=int&offset=int'
 @app.route('/epochs', methods = ['GET'])
 def modified_epoch():
     """
