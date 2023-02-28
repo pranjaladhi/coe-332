@@ -34,11 +34,14 @@ def vectors(epoch: str) -> list:
         state_vectors (list): state vectors of the specified EPOCH
     """
     data = data_set()
-    for i in range(len(data['ndm']['oem']['body']['segment']['data']['stateVector'])):
-        if (data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'] == epoch):
-            state_vectors = []
-            state_vectors.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i])
+    try:
+        for i in range(len(data['ndm']['oem']['body']['segment']['data']['stateVector'])):
+            if (data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'] == epoch):
+                state_vectors = []
+                state_vectors.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i])
             return state_vectors
+    except KeyError:
+        return "Data not loaded in\n"
 
 #to run with query parameter: curl 'localhost:5000/epochs?limit=int&offset=int'
 @app.route('/epochs', methods = ['GET'])
@@ -51,7 +54,10 @@ def modified_epoch():
         epochs (list): list of all EPOCHs
     """
     data = data_set()
-    num_epochs = request.args.get('limit', len(data['ndm']['oem']['body']['segment']['data']['stateVector']))
+    try:
+        num_epochs = request.args.get('limit', len(data['ndm']['oem']['body']['segment']['data']['stateVector']))
+    except KeyError:
+        return "Data not loaded in\n"
     start = request.args.get('offset', 0)
     if num_epochs:
         try:
@@ -82,7 +88,10 @@ def epoch_speed(epoch: str) -> dict:
     """
     data = vectors(epoch)
     speed = {}
-    sumSpeedSquare = pow(float(data[0]['X_DOT']['#text']), 2) + pow(float(data[0]['Y_DOT']['#text']), 2) + pow(float(data[0]['Z_DOT']['#text']), 2)
+    try:
+        sumSpeedSquare = pow(float(data[0]['X_DOT']['#text']), 2) + pow(float(data[0]['Y_DOT']['#text']), 2) + pow(float(data[0]['Z_DOT']['#text']), 2)
+    except TypeError:
+        return "Data not loaded in\n"
     speed['Speed of EPOCH'] = (sqrt(sumSpeedSquare)) #magnitude of speed utilizing the x, y, and z components of speed
     return speed
 
