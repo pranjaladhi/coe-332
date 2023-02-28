@@ -26,7 +26,7 @@ if num_epochs:
             num_epochs = int(num_epochs)
         except ValueError:
             return "Limit must be an integer\n"
-    if start:
+if start:
         try:
             start = int(start)
         except ValueError:
