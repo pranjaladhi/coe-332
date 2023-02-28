@@ -23,26 +23,6 @@ def data_set():
     """
     return iss_data
 
-@app.route('/epochs/<epoch>', methods = ['GET'])
-def vectors(epoch: str) -> list:
-    """
-    Outputs the state vectors for the specified EPOCH from the data set.
-    
-    Args:
-        epoch (str): specified EPOCH time stamp
-    Returns:
-        state_vectors (list): state vectors of the specified EPOCH
-    """
-    data = data_set()
-    try:
-        for i in range(len(data['ndm']['oem']['body']['segment']['data']['stateVector'])):
-            if (data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'] == epoch):
-                state_vectors = []
-                state_vectors.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i])
-            return state_vectors
-    except KeyError:
-        return "Data not loaded in\n"
-
 #to run with query parameter: curl 'localhost:5000/epochs?limit=int&offset=int'
 @app.route('/epochs', methods = ['GET'])
 def modified_epoch():
@@ -75,7 +55,27 @@ def modified_epoch():
         epochs.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][start]['EPOCH'])
         start += 1
     return epochs
-        
+
+@app.route('/epochs/<epoch>', methods = ['GET'])
+def vectors(epoch: str) -> list:
+    """
+    Outputs the state vectors for the specified EPOCH from the data set.
+    
+    Args:
+        epoch (str): specified EPOCH time stamp
+    Returns:
+        state_vectors (list): state vectors of the specified EPOCH
+    """
+    data = data_set()
+    try:
+        for i in range(len(data['ndm']['oem']['body']['segment']['data']['stateVector'])):
+            if (data['ndm']['oem']['body']['segment']['data']['stateVector'][i]['EPOCH'] == epoch):
+                state_vectors = []
+                state_vectors.append(data['ndm']['oem']['body']['segment']['data']['stateVector'][i])
+            return state_vectors
+    except KeyError:
+        return "Data not loaded in\n"
+    
 @app.route('/epochs/<epoch>/speed', methods = ['GET'])
 def epoch_speed(epoch: str) -> dict:
     """
