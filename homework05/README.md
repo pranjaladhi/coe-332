@@ -75,7 +75,7 @@ where <username> is your Docker Hub username. Afterwards, it can be ran with the
 > `docker run -it --rm -p <host port>:<container port> <username>/iss_tracker:<version>`
 
 After building and running the containerized Flask app in the first terminal, the server will be running. Now, the second terminal will be used for the API query commands. To start, run the line:
-> `curl localhost:5000/help'
+> `curl localhost:5000/help`
 
 This will output brief descriptions of all the available routes in the API. An example may look like:
 ```
