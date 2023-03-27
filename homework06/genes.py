@@ -1,3 +1,5 @@
+#Pranjal Adhikari pa8729
+
 from flask import Flask, request
 import redis
 import requests
@@ -9,13 +11,16 @@ def get_redis_client():
     return redis.Redis(host='redis-db', port=6379, db=0, decode_responses=True)
 rd = get_redis_client()
 
-def get_method():
+def get_method() -> dict, str:
     global rd
-    load_genes_data = json.loads(rd.get('genes_data'))
+    try: 
+        load_genes_data = json.loads(rd.get('genes_data'))
+    except Exception as err:
+        return f'Error. Data not loaded in\n', 404
     return load_genes_data
     
 @app.route('/data', methods = ['GET', 'POST', 'DELETE'])
-def data_requests():
+def data_requests() -> dict, str:
     global rd
     if request.method == 'GET':
         genes = get_method()
@@ -24,11 +29,17 @@ def data_requests():
     elif request.method == 'POST':
         response = requests.get(url='https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json')
         all_genes_data = response.json().get('response').get('docs')
-        rd.set('genes_data', json.dumps(all_genes_data))
+        try:
+            rd.set('genes_data', json.dumps(all_genes_data))
+        except Exception as err:
+            return f'Error. Data not loaded in\n', 404
         return f'Data loaded in\n'
 
     elif request.method == 'DELETE':
-        rd.flushdb()
+        try: 
+            rd.flushdb()
+        except Exception as err:
+            return f'Error. Data not loaded in\n', 404
         return f'Data deleted\n'
             
     else:
@@ -39,8 +50,11 @@ def data_requests():
 def genes() -> list:
     genes_data = get_method()
     genes_id_list = []
-    for item in genes_data:
-        genes_id_list.append(item.get('hgnc_id'))
+    try:
+        for item in genes_data:
+            genes_id_list.append(item.get('hgnc_id'))
+    except Exception as err:
+        return f'Error. Data not loaded in\n', 404
     return genes_id_list
 
 
@@ -48,15 +62,14 @@ def genes() -> list:
 def gene_id(hgnc_id: str) -> dict:
     global rd
     genes_data = get_method()
-    #return rd.get(hgnc_id)
-    genes_id_data = {}
-    for item in genes_data:
-        if item.get('hgnc_id') == hgnc_id:
-            return item
-            #genes_id_data.append(rd.get(hgnc_id))
-        #return genes_id_data
-    #return f'No data found'
-    
+    try:
+        for item in genes_data:
+            if item.get('hgnc_id') == hgnc_id:
+                return item
+        return f'Error. No HGNC ID found\n', 404 
+    except Exception as err:
+        return f'Error. Data not loaded in\n', 404
+            
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
