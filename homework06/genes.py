@@ -31,13 +31,11 @@ def get_method() -> dict:
     global rd
     try:
         return json.loads(rd.get('genes_data'))
-        #load_genes_data = json.loads(rd.get('genes_data'))
     except Exception as err:
         return f'Error. Data not loaded in\n', 404
-    #return load_genes_data
     
 @app.route('/data', methods = ['GET', 'POST', 'DELETE'])
-def data_requests() -> dict, str:
+def data_requests() -> dict:
     """
     Handles all available methods of 'GET', 'POST', and 'DELETE' that can be requested by the user.
     
@@ -50,25 +48,18 @@ def data_requests() -> dict, str:
     global rd
     if request.method == 'GET':
         return get_method()
-        #genes = get_method()
-        #return genes
 
     elif request.method == 'POST':
         response = requests.get(url='https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json')
-        #all_genes_data = response.json().get('response').get('docs')
-        #try:
-        #    rd.set('genes_data', json.dumps(all_genes_data))
+        all_genes_data = response.json().get('response').get('docs')
         try:
-            rd.set('genes_data', json.dumps(response.json().get('response').get('docs')
+            rd.set('genes_data', json.dumps(all_genes_data))
         except Exception as err:
             return f'Error. Data not loaded in\n', 404
         return f'Data loaded in\n'
 
     elif request.method == 'DELETE':
-        try: 
-            rd.flushdb()
-        except Exception as err:
-            return f'Error. Data not loaded in\n', 404
+        rd.flushdb()
         return f'Data deleted\n'
             
     else:
