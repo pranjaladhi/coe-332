@@ -29,11 +29,12 @@ def get_method() -> dict:
         load_genes_data (dict): dictionary with all data from the database 
     """
     global rd
-    try: 
-        load_genes_data = json.loads(rd.get('genes_data'))
+    try:
+        return json.loads(rd.get('genes_data'))
+        #load_genes_data = json.loads(rd.get('genes_data'))
     except Exception as err:
         return f'Error. Data not loaded in\n', 404
-    return load_genes_data
+    #return load_genes_data
     
 @app.route('/data', methods = ['GET', 'POST', 'DELETE'])
 def data_requests() -> dict, str:
@@ -48,14 +49,17 @@ def data_requests() -> dict, str:
     """
     global rd
     if request.method == 'GET':
-        genes = get_method()
-        return genes
+        return get_method()
+        #genes = get_method()
+        #return genes
 
     elif request.method == 'POST':
         response = requests.get(url='https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json')
-        all_genes_data = response.json().get('response').get('docs')
+        #all_genes_data = response.json().get('response').get('docs')
+        #try:
+        #    rd.set('genes_data', json.dumps(all_genes_data))
         try:
-            rd.set('genes_data', json.dumps(all_genes_data))
+            rd.set('genes_data', json.dumps(response.json().get('response').get('docs')
         except Exception as err:
             return f'Error. Data not loaded in\n', 404
         return f'Data loaded in\n'
