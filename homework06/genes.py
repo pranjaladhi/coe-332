@@ -1,62 +1,62 @@
 from flask import Flask, request
 import redis
 import requests
+import json
 
 app = Flask(__name__)
+
 def get_redis_client():
     return redis.Redis(host='redis-db', port=6379, db=0, decode_responses=True)
 rd = get_redis_client()
 
-
 def get_method():
-    all_genes_data = rd.hgetall()
-    return f'test'
-
-def post_method():
     global rd
-    response = requests.get(url='https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json')
-    all_genes_data = response.json().get('responseHeader')
-    rd.hset('genes', all_genes_data)
-    return f'test'
-
-def delete_method():
-    global rd
-    rd.flushdb()
-    return f'Data deleted'
-
+    load_genes_data = json.loads(rd.get('genes_data'))
+    return load_genes_data
+    
 @app.route('/data', methods = ['GET', 'POST', 'DELETE'])
 def data_requests():
     global rd
     if request.method == 'GET':
-        all_gene_data = rd.hgetall('genes')
-        #all_gene_data = []
-        #    all_gene_data.append(rd.hgetall(item))
-        return all_gene_data
+        genes = get_method()
+        return genes
 
     elif request.method == 'POST':
-        post_method()
-        return 'Data loaded in\n'
+        response = requests.get(url='https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json')
+        all_genes_data = response.json().get('response').get('docs')
+        rd.set('genes_data', json.dumps(all_genes_data))
+        return f'Data loaded in\n'
 
     elif request.method == 'DELETE':
-        delete_method()
-        return f'delete test'
+        rd.flushdb()
+        return f'Data deleted\n'
             
     else:
-        return 'No method selected. Methods available: GET, POST, DELETE\n'    
+        return f'No available method selected. Methods available: GET, POST, DELETE\n', 404    
 
 
 @app.route('/genes', methods = ['GET'])
-def genes():
-    genes_data = [] 
-    return genes_data
+def genes() -> list:
+    genes_data = get_method()
+    genes_id_list = []
+    for item in genes_data:
+        genes_id_list.append(item.get('hgnc_id'))
+    return genes_id_list
 
 
 @app.route('/genes/<hgnc_id>', methods = ['GET'])
-def gene_id():
-    genes_id = []
-    #if item == hgnc_id
-    return genes_id
-
+def gene_id(hgnc_id: str) -> dict:
+    global rd
+    genes_data = get_method()
+    #return rd.get(hgnc_id)
+    genes_id_data = {}
+    for item in genes_data:
+        if item.get('hgnc_id') == hgnc_id:
+            return item
+            #genes_id_data.append(rd.get(hgnc_id))
+        #return genes_id_data
+    #return f'No data found'
+    
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
