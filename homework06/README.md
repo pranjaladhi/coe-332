@@ -1,20 +1,20 @@
 # Human Gene API  
 
 ## Purpose
-This project develops a local Flask application to query and return information regarding human gene data. The data utilized in this project is supplied through the [NASA website](https://spotthestation.nasa.gov/trajectory_data.cfm) and is stored [here](https://nasa-public-data.s3.amazonaws.com/iss-coords/current/ISS_OEM/ISS.OEM_J2K_EPH.xml), an XML data set. Taking the data, a Flask application is developed that exposes the data to the user by twelve different routes with the user's input.
+This project develops a local Flask application to query and return information regarding human gene data. The data utilized in this project is supplied through the [HGNC website](https://www.genenames.org/download/archive/) and is stored [here](https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json). Taking the data, a Flask application is developed that allows the user to make requests with five total routes.
 
 A main objective of this project is to develop skills working with the Python Flask web framework and learn how to set up a REST API with multiple routes. Additionally, another object is to learn how to containerize the script with Docker for any user to utilize the script. Working with the Flask library will allow for the understanding of building web servers in a small scale and allow for familiarization in understanding how they are used.
 
 ## File Structure
 The API is structured with two essential files *iss_tracker.py* and *Dockerfile*. The file *docker-compose.yml*, while not essential, can be utilized to run the program with preset configurations. 
 
-### [iss_tracker.py](https://github.com/pranjaladhi/ISS_tracker/blob/main/iss_tracker.py)
+### [genes.py](https://github.com/pranjaladhi/coe-332/blob/main/homework06/genes.py)
 Processes all of the HTTP requests made to the API by the user. The functions within each route of the file return the requested data.
 
-### [Dockerfile](https://github.com/pranjaladhi/ISS_tracker/blob/main/Dockerfile)
+### [Dockerfile](https://github.com/pranjaladhi/coe-332/blob/main/homework06/Dockerfile)
 Contains important commands for building the image to run the API within a container.
 
-### [docker-compose.yml](https://github.com/pranjaladhi/ISS_tracker/blob/main/docker-compose.yml)
+### [docker-compose.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework06/docker-compose.yml)
 Configures the application containers, which can then be created and ran with the configuration via a single command. 
 
 ## Running the Code
