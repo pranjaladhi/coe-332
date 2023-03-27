@@ -74,7 +74,7 @@ This will return all hgnc_id data in the database. The output may look like:
 ```
 ```
 
-### > `curl localhost:5000/genes/<hgnc_id>`
+#### > `curl localhost:5000/genes/<hgnc_id>`
 
 Lastly, this request will return all data associated with `<hgnc_id>`. With `HGNC:xx` in the source....
 
