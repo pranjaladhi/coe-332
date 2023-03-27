@@ -8,10 +8,26 @@ import json
 app = Flask(__name__)
 
 def get_redis_client():
+    """
+    Returns the Redis client for usage with the database.
+    
+    Args:
+        none
+    Returns:
+        Redis (Redis): Redis client
+    """
     return redis.Redis(host='redis-db', port=6379, db=0, decode_responses=True)
 rd = get_redis_client()
 
-def get_method() -> dict, str:
+def get_method() -> dict:
+    """
+    Returns all data retrieved from the Redis database.
+
+    Args:
+        none
+    Returns: 
+        load_genes_data (dict): dictionary with all data from the database 
+    """
     global rd
     try: 
         load_genes_data = json.loads(rd.get('genes_data'))
@@ -21,6 +37,15 @@ def get_method() -> dict, str:
     
 @app.route('/data', methods = ['GET', 'POST', 'DELETE'])
 def data_requests() -> dict, str:
+    """
+    Handles all available methods of 'GET', 'POST', and 'DELETE' that can be requested by the user.
+    
+    Args:
+        none
+    Returns:
+        genes (dict): dictionary with all data from the database
+        (str): string message stating if the request was complete or if error was found
+    """
     global rd
     if request.method == 'GET':
         genes = get_method()
@@ -48,6 +73,14 @@ def data_requests() -> dict, str:
 
 @app.route('/genes', methods = ['GET'])
 def genes() -> list:
+    """
+    Returns all HGNC ID values found in the database.
+
+    Args:
+        none
+    Returns:
+        genes_id_list (list): list of all HGNC ID values
+    """
     genes_data = get_method()
     genes_id_list = []
     try:
@@ -60,6 +93,14 @@ def genes() -> list:
 
 @app.route('/genes/<hgnc_id>', methods = ['GET'])
 def gene_id(hgnc_id: str) -> dict:
+    """
+    Returns all data associated with the given <hgnc_id> data.
+
+    Args:
+        hgnc_id (str): HGNC ID value
+    Returns:
+        item (dict): data associated with HGNC ID value
+    """
     global rd
     genes_data = get_method()
     try:
