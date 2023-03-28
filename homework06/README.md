@@ -154,7 +154,7 @@ This will delete the human gene data gathered from the source. The `-X DELETE` i
 Data deleted
 ```
 
-If any requests are ran after running this deleted request, a 404 error will return with the message:
+If any requests are ran after running this `DELETE` request, a 404 error will return with the message:
 ```
 Error. Data not loaded in
 ```
