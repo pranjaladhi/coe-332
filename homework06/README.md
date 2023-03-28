@@ -1,21 +1,21 @@
 # Human Gene API  
 
 ## Purpose
-This project develops a local Flask application to query and return information regarding human gene data. The data utilized in this project is supplied through the [HGNC website](https://www.genenames.org/download/archive/) and is stored [here](https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json). Taking the data, a Flask application is developed that allows the user to make requests with five total routes.
+This project develops a local Flask application to query and return information regarding human gene data. The data utilized in this project is supplied through the [HGNC website](https://www.genenames.org/download/archive/) and is stored [here](https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json). Taking the data, a Flask application is developed that allows users to make requests with five total routes. The Flask application is used in conjunction with the Redis service to create a database, ensuring all gathered data is not lost in the event of the Flask application stopping.
 
-A main objective of this project is to develop skills working with the Python Flask web framework and learn how to set up a REST API with multiple routes. Additionally, another object is to learn how to containerize the script with Docker for any user to utilize the script. Working with the Flask library will allow for the understanding of building web servers in a small scale and allow for familiarization in understanding how they are used.
+Objectives of this project include developing skills working with the Python Flask web framework and Redis. Both services are powerful tools to set up REST APIs and to be used as a database to store data that the script uses. The project includes combining these two services to learn how they are interact and are able to be integrated with one another. Lastly, Docker will be used to learn how to containerize the script with these services, allowing for any user to utilize this script built. In conclusion, these tools are powerful for developing small scale applications and utilizing them in this project will allow for the understanding of how they can be used.
 
 ## File Structure
 The API is structured with two essential files *genes.py* and *Dockerfile*. The file *docker-compose.yml*, while not essential, can be utilized to run the program with preset configurations. 
 
 ### [genes.py](https://github.com/pranjaladhi/coe-332/blob/main/homework06/genes.py)
-Processes all of the HTTP requests made to the API by the user. The functions within each route of the file returns the requested data.
+Processes all of the HTTP requests made to the API by the user. The functions within each route of the file returns the requested data by the user.
 
 ### [Dockerfile](https://github.com/pranjaladhi/coe-332/blob/main/homework06/Dockerfile)
-Contains important commands for building the image to run the API within a container.
+Contains important commands for building the image to run the API within a container. Includes the installation of specific Python libraries that the script utilizes.
 
 ### [docker-compose.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework06/docker-compose.yml)
-Configures the application containers, which can then be created and ran with the configuration via a single command. 
+Configures the application containers, which can then be created and ran with the configuration via a single command. Instructions to run the Redis service is also included, thus both Flask and Redis can be started utilizing this file.
 
 ## Running the Code
 
@@ -28,18 +28,18 @@ The Python requests library is also utilized to fetch the data from the source w
 
 ### Docker Setup
 First, open two terminals. The first terminal will be used to utilize the image from Docker Hub, which can be pulled with the line:
-> `docker pull pranjaladhikari/genes:1.0`
+> `docker pull pranjaladhikari/genes_app:1.0`
 
 Next, the containerized Flask app will have to start, which can be ran with the line:
-> `docker run -it --rm -p <host port>:<container port> pranjaladhikari/genes:1.0`
+> `docker run -it --rm -p <host port>:<container port> pranjaladhikari/genes_app:1.0`
 
-The flag `-p` is used to bind a port on the container to a port on the machine that is running the script. For example, if the Flask application is running on the `<host port>` 5000, but the `<container port>` is not connected to port 5000, the Flask program won't be able to start and communicate with the machine.
+The `-it` flag attaches the terminal inside to container for the user to interact with the container. The `--rm` flag ensures the container is removed after exiting the Flask application. The flag `-p` is used to bind a port on the container to a port on the machine that is running the script. For example, if the Flask application is running on the `<host port>` 5000, but the `<container port>` is not connected to port 5000, the Flask program won't be able to start and communicate with the machine.
 
 If building a new image from the Dockerfile, both of the files *Dockerfile* and *genes.py* must be in the same directory. Afterward, the image can be built with the line:
-> `docker build -t <username>/genes:<version> .`
+> `docker build -t <username>/genes_app:<version> .`
 
 where `<username>` is your Docker Hub username and `<version>` is the version tag. Then, it can be ran with the line:
-> `docker run -it --rm -p <host port>:<container port> <username>/genes:<version>`
+> `docker run -it --rm -p <host port>:<container port> <username>/genes_app:<version>`
 
 After pulling the image from the Docker Hub, the above processes of building and running can be simplified utilizing *docker-compose.yml*. This will automatically configure all options needed to start the container in a single file. Once the file is in the same directory as *Dockerfile* and *genes.py*, the container can be started with the line:
 > `docker-compose up`
