@@ -34,6 +34,7 @@ def get_method() -> dict:
     except Exception as err:
         return f'Error. Data not loaded in\n', 404
     
+
 @app.route('/data', methods = ['GET', 'POST', 'DELETE'])
 def data_requests() -> dict:
     """
@@ -106,6 +107,7 @@ def gene_id(hgnc_id: str) -> dict:
     except Exception as err:
         return f'Error. Data not loaded in\n', 404
             
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
