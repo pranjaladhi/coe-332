@@ -27,24 +27,26 @@ The Python requests library is also utilized to fetch the data from the source w
 > `pip3 install --user requests`
 
 ### Docker Setup
-First, open two terminals. The first terminal will be used to utilize the image from Docker Hub, which can be pulled with the line:
+First, open two terminals. The first terminal will be used for Docker and to begin the services, and the second will be used for requests to the API. In the first terminal, the image for the application is required and can be pulled from Docker with the line:
 > `docker pull pranjaladhikari/genes_app:1.0`
+
+The next step is to start the Redis and Flask services, which can be done both manually with user preferences, or launched together automatically. 
+#### Manual Setup
+The Redis container will first have start. Before however, a `data` directory will have to be created first for the Redis database to store the gathered data. Afterwards, the Redis service can be ran with the line:
+> `docker run -d -p 6379:6379 -v /data:/data:rw redis:7 --save 1 1
 
 Next, the containerized Flask app will have to start, which can be ran with the line:
 > `docker run -it --rm -p <host port>:<container port> pranjaladhikari/genes_app:1.0`
 
 The `-it` flag attaches the terminal inside to container for the user to interact with the container. The `--rm` flag ensures the container is removed after exiting the Flask application. The flag `-p` is used to bind a port on the container to a port on the machine that is running the script. For example, if the Flask application is running on the `<host port>` 5000, but the `<container port>` is not connected to port 5000, the Flask program won't be able to start and communicate with the machine.
 
-If building a new image from the Dockerfile, both of the files *Dockerfile* and *genes.py* must be in the same directory. Afterward, the image can be built with the line:
-> `docker build -t <username>/genes_app:<version> .`
+*Sidenote: If building a new image from the Dockerfile, both of the files *Dockerfile* and *genes.py* must be in the same directory. Afterwards, the image can be built with the line: `docker build -t <username>/genes_app:<version> .` where `<username>` is your Docker Hub username and `<version>` is the version tag. Then, it can be ran with the line: `docker run -it --rm -p <host port>:<container port> <username>/genes_app:<version>`.
 
-where `<username>` is your Docker Hub username and `<version>` is the version tag. Then, it can be ran with the line:
-> `docker run -it --rm -p <host port>:<container port> <username>/genes_app:<version>`
-
-After pulling the image from the Docker Hub, the above processes of building and running can be simplified utilizing *docker-compose.yml*. This will automatically configure all options needed to start the container in a single file. Once the file is in the same directory as *Dockerfile* and *genes.py*, the container can be started with the line:
+#### Launch Together
+After pulling the image from the Docker Hub, the above processes of building and running the Flask and Redis services can be skipped by utilizing *docker-compose.yml*. This will automatically configure all options needed to start the container in a single file. Once the file is in the same directory as *Dockerfile* and *genes.py*, the container can be started with the line:
 > `docker-compose up`
 
-With the commands above of building and running the containerized Flask app, the server will be running. Now, the second terminal will be used for the HTTP requests to the API.
+With the commands above of building and running the containerized Flask and Redis services, the second terminal can be used for the HTTP requests to the API.
 
 ### Requests to the API
 With the container running in the other terminal, the second terminal can be used for requests to the API.
