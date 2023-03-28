@@ -43,7 +43,7 @@ def data_requests() -> dict:
         none
     Returns:
         genes (dict): dictionary with all data from the database
-        (str): string message stating if the request was complete or if error was found
+        (str): message stating if the request was complete or if error was found
     """
     global rd
     if request.method == 'GET':
