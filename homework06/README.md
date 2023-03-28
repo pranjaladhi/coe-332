@@ -9,7 +9,7 @@ A main objective of this project is to develop skills working with the Python Fl
 The API is structured with two essential files *genes.py* and *Dockerfile*. The file *docker-compose.yml*, while not essential, can be utilized to run the program with preset configurations. 
 
 ### [genes.py](https://github.com/pranjaladhi/coe-332/blob/main/homework06/genes.py)
-Processes all of the HTTP requests made to the API by the user. The functions within each route of the file return the requested data.
+Processes all of the HTTP requests made to the API by the user. The functions within each route of the file returns the requested data.
 
 ### [Dockerfile](https://github.com/pranjaladhi/coe-332/blob/main/homework06/Dockerfile)
 Contains important commands for building the image to run the API within a container.
@@ -19,23 +19,30 @@ Configures the application containers, which can then be created and ran with th
 
 ## Running the Code
 
+### Flask & Redis Setup
+The API utilizes the Flask Python library and Redis NoSQL database to run the application and store the data used in a database. These two tools are required to run the API and can be installed by the line:
+> `pip3 install --user flask && pip3 install redis`
+
+The Python requests library is also utilized to fetch the data from the source website. It can be installed with the line:
+> `pip3 install --user requests`
+
 ### Docker Setup
-First, open two terminals. The first terminal will be used to utilize the image from Docker Hub, which will be pulled with the line:
+First, open two terminals. The first terminal will be used to utilize the image from Docker Hub, which can be pulled with the line:
 > `docker pull pranjaladhikari/genes:1.0`
 
-Next, to run the containerized Flask app, run the line:
+Next, the containerized Flask app will have to start, which can be ran with the line:
 > `docker run -it --rm -p <host port>:<container port> pranjaladhikari/genes:1.0`
 
 The flag `-p` is used to bind a port on the container to a port on the machine that is running the script. For example, if the Flask application is running on the `<host port>` 5000, but the `<container port>` is not connected to port 5000, the Flask program won't be able to start and communicate with the machine.
 
-If building a new image from the Dockerfile, both of the files *Dockerfile* and *iss_tracker.py* must be in the same directory. Afterward, the image can be built with the line:
+If building a new image from the Dockerfile, both of the files *Dockerfile* and *genes.py* must be in the same directory. Afterward, the image can be built with the line:
 > `docker build -t <username>/genes:<version> .`
 
 where `<username>` is your Docker Hub username and `<version>` is the version tag. Then, it can be ran with the line:
-> `docker run -it --rm -p <host port>:<container port> <username>/iss_tracker:<version>`
+> `docker run -it --rm -p <host port>:<container port> <username>/genes:<version>`
 
-After pulling the image from the Docker Hub, the above processes of building and running can be simplified utilizing *docker-compose.yml*. This will automatically configure all options needed to start the container in a single file. Once the file is in the same directory as *Dockerfile* and *iss_tracker.py*, the container can be started with the line:
-> `docker-compose up --build`
+After pulling the image from the Docker Hub, the above processes of building and running can be simplified utilizing *docker-compose.yml*. This will automatically configure all options needed to start the container in a single file. Once the file is in the same directory as *Dockerfile* and *genes.py*, the container can be started with the line:
+> `docker-compose up`
 
 With the commands above of building and running the containerized Flask app, the server will be running. Now, the second terminal will be used for the HTTP requests to the API.
 
