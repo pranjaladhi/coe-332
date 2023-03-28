@@ -243,5 +243,5 @@ Lastly, this request will return all data associated with `<hgnc_id>`. With `HGN
 }
 ```
 
-### HGNC Data
+## HGNC Data
 The data used for this project is gathered from HGNC. It provides the names, symbols, and the associated data regarding the various types of human genes. This includes the protein products, gene families, and the date the gene name was last changed. The dataset is available for the public and can be found [here](https://www.genenames.org/download/archive/).
