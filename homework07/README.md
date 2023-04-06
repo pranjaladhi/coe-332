@@ -1,7 +1,7 @@
-# Human Gene API  
+# Human Gene API with Kubernetes  
 
 ## Purpose
-This project develops a local Flask application to query and return information regarding human gene data. The data utilized in this project is supplied through the [HGNC website](https://www.genenames.org/download/archive/) and is stored [here](https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json). Taking the data, a Flask application is developed that allows users to make requests with five total routes. The Flask application is used in conjunction with the Redis service to create a database, ensuring all gathered data is not lost in the event of the Flask application stopping.
+This project builds upon [homework06](https://github.com/pranjaladhi/coe-332/tree/main/homework06), but the application now has the ability to be deployed utilizing a Kubernetes (K8) cluster. The data utilized in this project is supplied through the [HGNC website](https://www.genenames.org/download/archive/) and is stored [here](https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json). Taking the data, the application is developed utilizing the same cocepts as the previous assignment, but applying Kubernetes allows for the data to be saved periodically in the case the application stops in any way.
 
 Objectives of this project include developing skills working with the Python Flask web framework and Redis. Both services are powerful tools to set up REST APIs and to be used as a database to store data that the script uses. The project includes combining these two services to learn how they interact and are able to be integrated with one another. Lastly, Docker will be used to learn how to containerize the script with these services, allowing for any user to utilize this script built. In conclusion, these tools are powerful for developing small scale applications, and utilizing them in this project will allow for a better understanding of their functions and abilities.
 
@@ -17,51 +17,45 @@ Contains important commands for building the image to run the API within a conta
 ### [docker-compose.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework06/docker-compose.yml)
 Configures the application containers, which can then be created and ran with the configuration via a single command. Instructions to run the Redis service is also included, thus both Flask and Redis can be started utilizing this file.
 
+### [gene-flask-deployment.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-flask-deployment.yml)
+Contains two pods which includes the Docker container needed for the Flask app.
+
+### [gene-flask-service.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-flask-service.yml)
+Routes the HTTPS requests made to the API with the route 5000.
+
+### [gene-redis-pvc.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-pvc.yml]
+Contains the setup of a PVC (persistent volume claim) which periodically saves data in the Redis database.
+
+### [gene-redis-deployment.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-deployment.yml)
+Allows the pod to run the Redis database continuously without interruptions.
+
+### [gene-redis-service.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-service.yml)
+Communicates via port 6379 to create a bridge between the Flask application and the Kubernetes pods that runs the Redis database.
+
 ## Running the Code
+Instructions to run the API utilizing Flask & Redis along with Docker can be found [here](https://github.com/pranjaladhi/coe-332/tree/main/homework06#running-the-code). As this project utilizes Kubernetes, kubectl must be installed which can be done [here](https://kubernetes.io/docs/tasks/tools/). After installation, the application can then be deployed. 
 
-### Flask & Redis Setup
-The API utilizes the Flask Python library and Redis NoSQL database to run the application and store the data used in a database. These two tools are required to run the API and can be installed by the line:
-> `pip3 install --user flask && pip3 install redis`
-
-The Python requests library is also utilized to fetch the data from the source website. It can be installed with the line:
-> `pip3 install --user requests`
-
-### Docker Setup
-First, open two terminals. The first terminal will be used for Docker and to begin the services, and the second will be used for requests to the API. In the first terminal, the image for the application is required and can be pulled from Docker with the line:
-> `docker pull pranjaladhikari/genes_app:1.0`
-
-The next step is to start the Redis and Flask services, which can be done both manually with user preferences, or launched together automatically. 
-
-#### Manual Setup
-The Redis container will first have start. Before however, a `data` directory will have to be created first for the Redis database to store the gathered data. Afterwards, the Redis service can be ran with the line:
-> `docker run -d -p 6379:6379 -v /data:/data:rw redis:7 --save 1 1`
-
-The `-d` flag allows the container to run in the background. The `-p` flag is used to bind a port on the container to a port on the machine that is running the script. For example, if the appliation is running on a different port than the machine, the program will not be able to start and communiate with the machine. The `-v` flag mounts the data to the container and the `--save` flag is used to save the Redis database to the directory `data`.
-
-Next, the containerized Flask app will have to start, which can be ran with the line:
-> `docker run -it --rm -p <host port>:<container port> pranjaladhikari/genes_app:1.0`
-
-The `-it` flag attaches the terminal inside to container for the user to interact with the container. The `--rm` flag ensures the container is removed after exiting the Flask application. The flag `-p` is the same as the `-p` flag exaplained above. For example, if the Flask application is running on the `<host port>` 5000, but the `<container port>` is not connected to port 5000, the Flask program won't be able to start and communicate with the machine.
-
-* Sidenote: If building a new image from the Dockerfile, both of the files *Dockerfile* and *genes.py* must be in the same directory. Afterwards, the image can be built with the line: `docker build -t <username>/genes_app:<version> .` where `<username>` is your Docker Hub username and `<version>` is the version tag. Then, it can be ran with the line: `docker run -it --rm -p <host port>:<container port> <username>/genes_app:<version>`.
-
-#### Launch Together
-After pulling the image from the Docker Hub, the above processes of building and running the Flask and Redis services can be skipped by utilizing *docker-compose.yml*. This will automatically configure all options needed to start the containers. Once the file is in the same directory as *Dockerfile* and *genes.py*, both services can be started with the line:
-> `docker-compose up`
-
-With the commands above of building and running the containerized Flask and Redis services, the second terminal can be used for the HTTP requests to the API.
+### Deploying Kubernetes Cluster
+With the `.yml` files all within the same directory, the application can be deployed with the lines:
+```
+kubectl apply -f gene-flask-deployment.yml
+kubectl apply -f gene-flask-service.yml
+kubectl apply -f gene-redis-pvc.yml
+kubectl apply -f gene-redis-deployment.yml
+kubectl apply -f gene-redis-service.yml
+```
 
 ### Requests to the API
-With the container running in the other terminal, the second terminal can be used for requests to the API.
+With the deployment of the application, the user can start making requests with the options below.
 
-#### > `curl -X POST localhost:5000/data`
+#### > `curl -X POST pa8729-test-flask-service:5000/data`
 
 This request will load the gene data from the source into the Redis database. Here, the `-X POST` is required as the method is a `POST`, and not the default `GET`. After running this request, it will allow the user to the requests below as the gene data has been loaded into the database. The output after running this request will be:
 ```
 Data loaded in
 ```
 
-#### > `curl -X GET localhost:5000/data`
+#### > `curl -X GET pa8729-test-flask-service:5000/data`
 
 This request will return all the gene data from the source. The `-X GET` is optional as the default route method is `GET`. The output after running this request will be:
 ```
@@ -147,7 +141,7 @@ This request will return all the gene data from the source. The `-X GET` is opti
 .
 ```
 
-#### > `curl -X DELETE localhost:5000/data`
+#### > `curl -X DELETE pa8729-test-flask-service:5000/data`
 
 This will delete the human gene data gathered from the source. The `-X DELETE` is required as the route accepts a `DELETE` method, and not the default `GET` method. After running this request, any other requests made will result in error as the gene data is no longer available in the database. The output of running this request will be:
 ```
@@ -159,22 +153,7 @@ If any requests are ran after running this `DELETE` request, a 404 error will re
 Error. Data not loaded in
 ```
 
-#### > `curl localhost:5000/genes`
-
-This will return all hgnc_id data in the database. The output may look like: 
-```
-[
-  "HGNC:5",
-  "HGNC:234",
-  .
-  .
-  .
-  "HGNC:29027",
-  "HGNC:24523"
-]
-```
-
-#### > `curl localhost:5000/genes/<hgnc_id>`
+#### > `curl pa8729-test-flask-service:5000/genes/<hgnc_id>`
 
 Lastly, this request will return all data associated with `<hgnc_id>`. With `HGNC:13194` in the place of `<hgnc_id>`, the output will look like:
 ```
