@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pa8729-test-flask-service
+  labels:
+    username: pa8729
+    env: test
+spec:
+  type: ClusterIP
+  selector:
+    app: pa8729-flask-app
+  ports:
+  - name: pa8729-flask-app
+    port: 5000
+    targetPort: 5000
