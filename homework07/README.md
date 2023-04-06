@@ -3,7 +3,7 @@
 ## Purpose
 This project builds upon [homework06](https://github.com/pranjaladhi/coe-332/tree/main/homework06), but the application now has the ability to be deployed utilizing a Kubernetes (K8) cluster. The data utilized in this project is supplied through the [HGNC website](https://www.genenames.org/download/archive/) and is stored [here](https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json). Taking the data, the application is developed utilizing the same cocepts as the previous assignment, but applying Kubernetes allows for the data to be saved periodically in the case the application stops in any way.
 
-Objectives of this project include developing skills working with the Python Flask web framework and Redis. Both services are powerful tools to set up REST APIs and to be used as a database to store data that the script uses. The project includes combining these two services to learn how they interact and are able to be integrated with one another. Lastly, Docker will be used to learn how to containerize the script with these services, allowing for any user to utilize this script built. In conclusion, these tools are powerful for developing small scale applications, and utilizing them in this project will allow for a better understanding of their functions and abilities.
+A main objective of this project is to learn how to implement Kubernetes with Flask and Redis. Utilizing Kubernetes is important as it allows for the continuation of a container running, even if it fails or stops suddenly. Working with tools such as Kubernetes will allow for a better understanding of its functions and abilities to be incorporated alongside other tools. 
 
 ## File Structure
 The API is structured with two essential files *genes.py* and *Dockerfile*. The file *docker-compose.yml*, while not essential, can be utilized to run the program with preset configurations. 
@@ -23,7 +23,7 @@ Contains two pods which includes the Docker container needed for the Flask app.
 ### [gene-flask-service.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-flask-service.yml)
 Routes the HTTPS requests made to the API with the route 5000.
 
-### [gene-redis-pvc.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-pvc.yml]
+### [gene-redis-pvc.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-pvc.yml)
 Contains the setup of a PVC (persistent volume claim) which periodically saves data in the Redis database.
 
 ### [gene-redis-deployment.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-deployment.yml)
