@@ -5,6 +5,7 @@ import redis
 import requests
 import json
 import os
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -114,8 +115,25 @@ def gene_id(hgnc_id: str) -> dict:
         return f'Error. Data not loaded in\n', 404
 
 @app.route('/image', methods = ['GET', 'POST', 'DELETE'])
-def image
+def image:
+    global rd0, rd1
+    if request.method == 'GET':
+        
 
+
+
+    elif request.method == 'POST':
+        
+
+
+
+    elif request.method == 'DELETE':
+        rd1.flushdb()
+        return f'Data deleted\n'
+
+    else:
+        return f'No available method selected. Methods available: GET, POST, DELETE\n', 404  
+    
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
