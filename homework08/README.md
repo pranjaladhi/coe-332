@@ -8,28 +8,28 @@ A main objective of this project is to learn how to implement Kubernetes with Fl
 ## File Structure
 The API is structured with two essential files *genes.py* and *Dockerfile*. The file *docker-compose.yml*, while not essential, can be utilized to run the program with preset configurations. 
 
-### [genes.py](https://github.com/pranjaladhi/coe-332/blob/main/homework06/genes.py)
+### [genes.py](https://github.com/pranjaladhi/coe-332/blob/main/homework08/genes.py)
 Processes all of the HTTP requests made to the API by the user. The functions within each route of the file returns the requested data by the user.
 
-### [Dockerfile](https://github.com/pranjaladhi/coe-332/blob/main/homework06/Dockerfile)
+### [Dockerfile](https://github.com/pranjaladhi/coe-332/blob/main/homework08/Dockerfile)
 Contains important commands for building the image to run the API within a container. Includes the installation of specific Python libraries that the script utilizes.
 
-### [docker-compose.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework06/docker-compose.yml)
+### [docker-compose.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework08/docker-compose.yml)
 Configures the application containers, which can then be created and ran with the configuration via a single command. Instructions to run the Redis service is also included, thus both Flask and Redis can be started utilizing this file.
 
-### [gene-flask-deployment.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-flask-deployment.yml)
+### [gene-flask-deployment.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework08/kubernetes/gene-flask-deployment.yml)
 Contains two pods which includes the Docker container needed for the Flask app.
 
-### [gene-flask-service.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-flask-service.yml)
+### [gene-flask-service.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework08/kubernetes/gene-flask-service.yml)
 Routes the HTTPS requests made to the API with the route 5000.
 
-### [gene-redis-pvc.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-pvc.yml)
+### [gene-redis-pvc.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework08/kubernetes/gene-redis-pvc.yml)
 Contains the setup of a PVC (persistent volume claim) which periodically saves data in the Redis database.
 
-### [gene-redis-deployment.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-deployment.yml)
+### [gene-redis-deployment.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework08/kubernetes/gene-redis-deployment.yml)
 Allows the pod to run the Redis database continuously without interruptions.
 
-### [gene-redis-service.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework07/gene-redis-service.yml)
+### [gene-redis-service.yml](https://github.com/pranjaladhi/coe-332/blob/main/homework08/kubernetes/gene-redis-service.yml)
 Communicates via port 6379 to create a bridge between the Flask application and the Kubernetes pods that runs the Redis database.
 
 ## Running the Code
