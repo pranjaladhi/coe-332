@@ -118,14 +118,10 @@ def gene_id(hgnc_id: str) -> dict:
 def image:
     global rd0, rd1
     if request.method == 'GET':
-        
-
-
+        return f'Not finished'
 
     elif request.method == 'POST':
-        
-
-
+        return f'Not finished'
 
     elif request.method == 'DELETE':
         rd1.flushdb()
