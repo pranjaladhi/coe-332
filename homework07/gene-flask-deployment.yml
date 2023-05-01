@@ -15,11 +15,11 @@ spec:
   template:
     metadata:
       labels:
-	username: pa8729
-	env: test
+        username: pa8729
+        env: test
         app: pa8729-test-flask
     spec:
       containers:
         - name: pa8729-test-flask
           image: pranjaladhikari/genes_app:1.0
-	  command: ['python3', 'genes.py']
+          command: ['python3', 'genes.py']

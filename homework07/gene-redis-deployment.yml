@@ -15,17 +15,17 @@ spec:
   template:
     metadata:
       labels:
-	username: pa8729
-	env: test
+        username: pa8729
+        env: test
         app: pa8729-test-redis
     spec:
       containers:
         - name: pa8729-test-redis
           image: redis:7
-	  volumeMounts:
-	    - name: pa8729-test-pvc
-	      mountPath: '/data'
+          volumeMounts:
+            - name: pa8729-test-pvc
+              mountPath: '/data'
       volumes:
         - name: pa8729-test-pvc
-	  persistentVolumeClaim:
-	    claimName: pa8729-test-pvc
+          persistentVolumeClaim:
+            claimName: pa8729-test-pvc
