@@ -36,17 +36,34 @@ Communicates via port 6379 to create a bridge between the Flask application and 
 Instructions to run the API utilizing Flask & Redis along with Docker can be found [here](https://github.com/pranjaladhi/coe-332/tree/main/homework06#running-the-code). As this project utilizes Kubernetes, kubectl must be installed which can be done [here](https://kubernetes.io/docs/tasks/tools/). After installation, the application can then be deployed. 
 
 ### Deploying Kubernetes Cluster
-With the `.yml` files all within the same directory, the application can be deployed with the lines:
+With the `.yml` files all within the same directory, the application can be deployed with the lines (in order):
 ```
 kubectl apply -f gene-flask-deployment.yml
 kubectl apply -f gene-flask-service.yml
 kubectl apply -f gene-redis-pvc.yml
 kubectl apply -f gene-redis-deployment.yml
 kubectl apply -f gene-redis-service.yml
+kubectl apply -f py-debug-deployment.yml
 ```
+With the Flask application running, run the command:
+```
+kubectl get pods
+```
+The output may look like:
+```
+pa8729-test-flask-deployment-55dd88d56b-42ldm   1/1     Running   0               25m
+pa8729-test-flask-deployment-55dd88d56b-x2x7v   1/1     Running   0               25m
+pa8729-test-redis-deployment-59dd65c686-6sz6r   1/1     Running   0               25m
+py-debug-deployment-84c7b596c6-92kbp            1/1     Running   0               21m
+```
+To make requests to the application, the user will first have to access the Kubernetes cluster environment, which can be done with the line:
+```
+kubectl exec -it <py-debug-deployment> -- /bin/bash
+```
+with the unique `<py-debug-deployment>`. In this case, `<py-debug-deployment>` will be `py-debug-deployment-84c7b596c6-92kbp`.
 
 ### Requests to the API
-With the deployment of the application, the user can start making requests with the options below.
+With the deployment of the application and within the Kubernetes environment, the user can start making requests with the routes below.
 
 #### > `curl -X POST pa8729-test-flask-service:5000/data`
 
