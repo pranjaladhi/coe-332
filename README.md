@@ -1,5 +1,7 @@
+# COE332
 This repository consists of all assignments for the course COE332: Software Engineering & Design.
 
+## Repository
 - [homework01](https://github.com/pranjaladhi/coe-332/tree/main/homework01): Demonstrating knowledge of basic Python skills while utilizing if statements and loops
 - [homework02](https://github.com/pranjaladhi/coe-332/tree/main/homework02): Working with JSON data format to determine a Mars rover travel time through different sites
 - [homework03](https://github.com/pranjaladhi/coe-332/tree/main/homework03): Utilizing HTTP GET requests to analyze water quality of different samples and writing unit test for functions in the script 
