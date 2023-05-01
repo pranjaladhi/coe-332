@@ -16,7 +16,7 @@ def get_redis_client():
     Returns:
         Redis (Redis): Redis client
     """
-    return redis.Redis(host='redis-db', port=6379, db=0, decode_responses=True)
+    return redis.Redis(host='pa8729-test-service', port=6379, db=0, decode_responses=True)
 rd = get_redis_client()
 
 def get_method() -> dict:
